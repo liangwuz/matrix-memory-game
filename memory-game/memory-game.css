@@ -1,44 +1,45 @@
 #content-container-lw {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background-color:#855439;
+    background-color: #4F362F;
 }
 
 #status-bar-lw {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    /* background-color: magenta; */
 }
 
 .game-status-lw {
     border: 1px, solid black;
-    background: rgb(95, 29, 20);
-    color: white;
-    margin-top: 20px;
-    margin-bottom: 75px;
+    padding: 10px;
+    background: #7F7571;
+    color: #4F362F;
+    font-weight: bold;
     text-align: center;
 }
 
 #game-container-lw {
-    height: 430px;
-    background-color: red;
+    height: 400px;
+    width: 350px;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    /* background-color: red; */
 }
 
 #tiles-container-lw {
-    width: 400px;
     margin: 0 auto;
+    margin-top: 10%;
+    margin-bottom: 10%;
     text-align: center;
-    background-color: green;
+    /* background-color: green; */
 }
 
 .tile-rows-lw {
-    width: 400px;
-    margin: 0 auto;
-    text-align: center;
-    background-color: blue;
+    /* background-color: blue;  */
 }
 
 .tiles-lw {
-    background-color:#3b2814; 
+    background-color:#3b2814;
+    border-radius: 5px; 
     width:50px; 
     height:50px;
 }
@@ -56,11 +57,11 @@
 }
 
 .rotatecw-lw {
-    -webkit-transition: -webkit-transform .5s linear;
+    -webkit-transition: -webkit-transform 0.5s linear;
     -webkit-transform: rotate(90deg);
 }
 
 .rotateccw-lw {
-    -webkit-transition: -webkit-transform .5s linear;
+    -webkit-transition: -webkit-transform 0.5s linear;
     -webkit-transform: rotate(-90deg);
 }
