@@ -1,6 +1,13 @@
 // init the game in the specified html div container
 function InitMemoryGame(htmlDivContainer) {
 
+    const GoogleIconHref = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+    const gameCssName = 'memory-game.css';
+    const pauseIcon = `<i class="material-icons">pause</i>`;
+    const resumeIcon = `<i class="material-icons">play_arrow</i>`;
+    const soundIcon = `<i class="material-icons">volume_up</i>`;
+    const mutedIcon = `<i class="material-icons">volume_off</i>`;
+
     // create status bar, control and game container
     (function createGameComponent() {
         loadGameCss();
@@ -11,9 +18,15 @@ function InitMemoryGame(htmlDivContainer) {
                     <b class="game-status-lw">Scores: <span id="user-score-lw"></span></b>
                     <b class="game-status-lw">Remaining tiles: <span id="remaining-tiles-lw"></span></b>
                 </div>
+                <div id="control-bar-lw">
+                    <button id="pause-btn-lw" class="control-btns-lw">${pauseIcon}</button>
+                    <button id="mute-btn-lw" class="control-btns-lw">${soundIcon}</button>
+                </div>
                 <div id="game-container-lw"></div>
             </div>
         `;
+
+        registerEvents();
     })();
 
     // load memory-game.css at the same folder as this js file
@@ -29,8 +42,8 @@ function InitMemoryGame(htmlDivContainer) {
                 break;
             }
         }
-        // css path
-        let css = path + 'memory-game.css';
+        // game css path
+        let css = path + gameCssName;
 
         // put into header
         let head = document.getElementsByTagName('head')[0];
@@ -39,6 +52,21 @@ function InitMemoryGame(htmlDivContainer) {
         link.type = 'text/css';
         link.href = css;
         head.appendChild(link);
+
+        // google icon
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = GoogleIconHref;
+        head.appendChild(link);
+    }
+
+    function registerEvents() {
+        const pauseBtn = document.getElementById('pause-btn-lw');
+        pauseBtn.onclick = puaseBtnClick.bind(null, pauseBtn);
+
+        const muteBtn = document.getElementById('mute-btn-lw');
+        muteBtn.onclick = muteBtnClick.bind(null, muteBtn);
     }
 
     // matrix dimension, number of tiles to be clicked and user score
@@ -136,8 +164,6 @@ function InitMemoryGame(htmlDivContainer) {
             ++score;
             updateGameStatusBar();
             tile.classList.add('correct-tiles-lw');
-            // remove it from the collection
-            targetTiles.splice(targetTiles.indexOf(tile), 1);
         } else {
             wrongClick = true;
             --score;
@@ -250,6 +276,48 @@ function InitMemoryGame(htmlDivContainer) {
         }
     }
 
+
+    let gameIsPaused = false;
+
+    function pauseGame() {
+        gameIsPaused = true;
+        allowClick = false;
+    }
+
+    // rerun the current level when resume
+    function resumeGame() {
+        if (gameIsPaused) {
+            gameIsPaused = false;
+            runGameLogic();
+        }
+    }
+
+    function puaseBtnClick(btn) {
+        if (btn.innerHTML === pauseIcon) {
+            pauseGame();
+            btn.innerHTML = resumeIcon;
+        } else {
+            resumeGame();
+            btn.innerHTML = pauseIcon;
+        }
+    }
+
+    function muteGame() {
+
+    }
+
+    function unmuteGame() {
+
+    }
+
+    function muteBtnClick(btn) {
+        if (btn.innerHTML === soundIcon) {
+            btn.innerHTML = mutedIcon;
+        } else {
+            btn.innerHTML = soundIcon;
+        }
+    }
+
     return {
         start: () => {
             resetGameStateAndRun();
@@ -257,12 +325,10 @@ function InitMemoryGame(htmlDivContainer) {
         restart: () => {
             resetGameStateAndRun();
         },
-        pause: () => {
-
-        },
-        resume: () => {
-
-        },
+        pause: pauseGame,
+        resume: resumeGame,
+        mute: muteGame,
+        unmute: unmuteGame,
         // end the game, return the score of this player
         end: () => {
             let cs = score;

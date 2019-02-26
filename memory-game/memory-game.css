@@ -17,6 +17,18 @@
     text-align: center;
 }
 
+#control-bar-lw {
+    /* background-color: white; */
+}
+
+.control-btns-lw {
+    border: none;
+    height: 30px;
+    widows: 30px;;
+    background: #7F7571;
+    color: #4F362F;
+}
+
 #game-container-lw {
     height: 400px;
     width: 350px;
