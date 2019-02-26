@@ -13,20 +13,24 @@ function InitMemoryGame(htmlDivContainer) {
         loadGameCss();
 
         htmlDivContainer.innerHTML = `
+        
             <div id="content-container-lw">
+
                 <div id="status-bar-lw">
-                    <b class="game-status-lw">Scores: <span id="user-score-lw"></span></b>
-                    <b class="game-status-lw">Remaining tiles: <span id="remaining-tiles-lw"></span></b>
-                </div>
-                <div id="control-bar-lw">
-                    <button id="pause-btn-lw" class="control-btns-lw">${pauseIcon}</button>
-                    <button id="mute-btn-lw" class="control-btns-lw">${soundIcon}</button>
+                    <div id="controls-lw">
+                        <button id="pause-btn-lw" class="control-btns-lw">${pauseIcon}</button>
+                        <button id="mute-btn-lw" class="control-btns-lw">${soundIcon}</button>
+                    </div>
+                    <div class="pull-top pull-right">
+                        <b class="game-status-lw">Scores: <span id="user-score-lw"></span></b>
+                        <b class="game-status-lw">Remaining tiles: <span id="remaining-tiles-lw"></span></b>
+                    </div>
                 </div>
                 <div id="game-container-lw"></div>
             </div>
         `;
 
-        registerEvents();
+        registerControlEvents();
     })();
 
     // load memory-game.css at the same folder as this js file
@@ -61,7 +65,7 @@ function InitMemoryGame(htmlDivContainer) {
         head.appendChild(link);
     }
 
-    function registerEvents() {
+    function registerControlEvents() {
         const pauseBtn = document.getElementById('pause-btn-lw');
         pauseBtn.onclick = puaseBtnClick.bind(null, pauseBtn);
 
@@ -70,12 +74,13 @@ function InitMemoryGame(htmlDivContainer) {
     }
 
     // matrix dimension, number of tiles to be clicked and user score
-    let row, col, tilesTobeClicked, score;
+    let row, col, tilesTobeClicked, prevLvScore, score;
 
     function resetGameStateAndRun() {
         row = 3;
         col = 3;
         tilesTobeClicked = 3;
+        prevLvScore = 0;
         score = 0;
 
         runGameLogic();
@@ -184,6 +189,7 @@ function InitMemoryGame(htmlDivContainer) {
             } else {
                 increaseDifficulty();
             }
+            prevLvScore = score;
             runGameLogic();
         }, 850);
     }
@@ -280,6 +286,10 @@ function InitMemoryGame(htmlDivContainer) {
     let gameIsPaused = false;
 
     function pauseGame() {
+        // clear clicked tiles score
+        score = prevLvScore;
+        updateGameStatusBar();
+        
         gameIsPaused = true;
         allowClick = false;
     }
