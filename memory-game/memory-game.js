@@ -1,81 +1,45 @@
 // init the game in the specified html div container
 function InitMemoryGame(htmlDivContainer) {
-    const STYLES = {
-        contentContainer: `
-            margin-top: 10px;
-            margin-bottm: 10px;
-            background-color:#855439;
-        `,
-        statusBar: `
-            margin-top: 5px;
-            margin-bottom: 5px;
-        `,
-        // gameStatus: `
-        //     border: 1px, solid black;
-        //     background: rgb(95, 29, 20);
-        //     color: white;
-        //     margin-top: 20px;
-        //     margin-bottom: 75px;
-        //     text-align: center;
-        // `,
-        gameContainer: `
-            height: 430px;
-            background-color: red;
-        `,
-        // tilesContainer: `
-        //     width: 400px;
-        //     margin: 0 auto;
-        //     text-align: center;
-        //     background-color: green;
-        // `,
-        tileRows: `
-            width: 400px;
-            margin: 0 auto;
-            text-align: center;
-            background-color: blue;
-        `,
-        tiles: `
-            background-color:#3b2814; 
-            width:50px; 
-            height:50px;
-        `,
-        targetTiles: `
-            background-color: rgb(23, 138, 138);
-            width:50px; 
-            height:50px;
-        `,
-        correctTiles: `
-            background-color: lightgreen;
-            width:50px; 
-            height:50px;
-        `,
-        wrongTiles: `
-            background-color: red;
-            width:50px; 
-            height:50px;
-        `,
-        rotatecw: `
-            -webkit-transition: -webkit-transform .5s linear;
-            -webkit-transform: rotate(90deg);
-        `,
-        rotateccw: `
-            -webkit-transition: -webkit-transform .5s linear;
-            -webkit-transform: rotate(-90deg);
-        `
-    };
 
     // create status bar, control and game container
     (function createGameComponent() {
+        loadGameCss();
+
         htmlDivContainer.innerHTML = `
-            <div id="content-container-lw" style="${STYLES.contentContainer}">
-                <div id="status-bar-lw" style="${STYLES.statusBar}">
-                    <b style="${STYLES.gameStatus}">Scores: <span id="user-score-lw"></span></b>
-                    <b style="${STYLES.gameStatus}">Remaining tiles: <span id="remaining-tiles-lw"></span></b>
+            <div id="content-container-lw">
+                <div id="status-bar-lw">
+                    <b class="game-status-lw">Scores: <span id="user-score-lw"></span></b>
+                    <b class="game-status-lw">Remaining tiles: <span id="remaining-tiles-lw"></span></b>
                 </div>
-                <div id="game-container-lw" style="${STYLES.gameContainer}"></div>
+                <div id="game-container-lw"></div>
             </div>
         `;
     })();
+
+    // load memory-game.css at the same folder as this js file
+    function loadGameCss() {
+        let scripts = document.getElementsByTagName('script');
+        let path;
+        // find the location of this script
+        for (let i = 0; i < scripts.length; ++i) {
+            const src = scripts[i].src;
+            const lastSlash = src.lastIndexOf('/');
+            if (src.substring(lastSlash+1) === 'memory-game.js'){
+                path = src.substring(0, lastSlash+1);
+                break;
+            }
+        }
+        // css path
+        let css = path + 'memory-game.css';
+
+        // put into header
+        let head = document.getElementsByTagName('head')[0];
+        let link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = css;
+        head.appendChild(link);
+    }
 
     // matrix dimension, number of tiles to be clicked and user score
     let row, col, tilesTobeClicked, score;
@@ -125,7 +89,6 @@ function InitMemoryGame(htmlDivContainer) {
         // div used for rotation 
         const tilesContainer = document.createElement('div');
         tilesContainer.setAttribute('id', 'tiles-container-lw');
-        // tilesContainer.setAttribute('style', STYLES.tilesContainer);
 
         const gameContainer = document.getElementById('game-container-lw');
         // remove prev tiles
@@ -136,13 +99,11 @@ function InitMemoryGame(htmlDivContainer) {
         for (let y = 0; y < row; ++y) {
             let row = document.createElement('div');
             row.setAttribute('class', 'tile-rows-lw');
-            row.setAttribute('style', STYLES.tileRows);
             tilesContainer.appendChild(row);
 
             for (let x = 0; x < col; ++x) {
                 let tile = document.createElement('button');
                 tile.setAttribute('class', 'tiles-lw');
-                tile.setAttribute('style', STYLES.tiles);
                 tile.onclick = () => { tileClick(tile) }
                 row.appendChild(tile)
                 allTiles.push(tile)
@@ -174,14 +135,14 @@ function InitMemoryGame(htmlDivContainer) {
             //correct tile, increase score and marked it correct
             ++score;
             updateGameStatusBar();
-            tile.style = STYLES.correctTiles;
+            tile.classList.add('correct-tiles-lw');
             // remove it from the collection
             targetTiles.splice(targetTiles.indexOf(tile), 1);
         } else {
             wrongClick = true;
             --score;
             updateGameStatusBar();
-            tile.style = STYLES.wrongTiles;
+            tile.classList.add('wrong-tiles-lw');
         }
     }
 
@@ -215,11 +176,11 @@ function InitMemoryGame(htmlDivContainer) {
         const promises = [];
         targetTiles.forEach((tile) => {
             // reveal the correct tiles
-            tile.style = STYLES.targetTiles;
+            tile.classList.add('target-tiles-lw');
 
             promises.push(setTimeoutPromise(() => {
                 // swithc back to normal
-                tile.style = STYLES.tiles;
+                tile.classList.remove('target-tiles-lw');
             }, ms))
         })
         if (callback) {
@@ -244,9 +205,9 @@ function InitMemoryGame(htmlDivContainer) {
 
         setTimeout(() => {
             if (Math.random() < 0.5) {
-                tiles.style = STYLES.rotateccw;
+                tiles.classList.add('rotatecw-lw');
             } else {
-                tiles.style = STYLES.rotateccw;
+                tiles.classList.add('rotateccw-lw')
             }
 
             if (callback) {
@@ -259,7 +220,7 @@ function InitMemoryGame(htmlDivContainer) {
     // reveal the correct tiles
     function revealResult() {
         targetTiles.forEach((tile) => {
-            tile.style = STYLES.targetTiles;
+            tile.classList.add('target-tiles-lw');
         })
     }
 
