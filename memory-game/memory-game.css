@@ -13,14 +13,14 @@
     position: relative;
     padding: 10px;
     background: #7F7571;
-    color: #4F362F;
+    color: rgb(49, 32, 27);
     font-weight: bold;
     text-align: center;
 }
 
 .pull-right {
     position: absolute;
-    right: 0;
+    right: 3%;
 }
 
 .pull-top {
@@ -40,11 +40,23 @@
     color: #4F362F;
 }
 
+#game-over-text-lw {
+    color: white;
+    font-size: 50px;
+}
+
+#restart-btn-lw {
+    border: none;
+    background-color: #4F362F;
+    color: white;
+}
+
 #game-container-lw {
     height: 400px;
     width: 350px;
     padding-bottom: 30px;
     margin: 0 auto;
+    text-align: center;
     /* background-color: red; */
 }
 

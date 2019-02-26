@@ -2,11 +2,12 @@
 function InitMemoryGame(htmlDivContainer) {
 
     const GoogleIconHref = 'https://fonts.googleapis.com/icon?family=Material+Icons';
-    const gameCssName = 'memory-game.css';
+    const gameCssRelativePath = './memory-game.css';
     const pauseIcon = `<i class="material-icons">pause</i>`;
     const resumeIcon = `<i class="material-icons">play_arrow</i>`;
     const soundIcon = `<i class="material-icons">volume_up</i>`;
     const mutedIcon = `<i class="material-icons">volume_off</i>`;
+    const restartIcon = `<i class="material-icons" style="font-size:50px;">refresh</i>`;
 
     // create status bar, control and game container
     (function createGameComponent() {
@@ -22,8 +23,8 @@ function InitMemoryGame(htmlDivContainer) {
                         <button id="mute-btn-lw" class="control-btns-lw">${soundIcon}</button>
                     </div>
                     <div class="pull-top pull-right">
-                        <b class="game-status-lw">Scores: <span id="user-score-lw"></span></b>
-                        <b class="game-status-lw">Remaining tiles: <span id="remaining-tiles-lw"></span></b>
+                        <b class="game-status-lw">SCORE: <span id="user-score-lw"></span></b>
+                        <b class="game-status-lw">TILES: <span id="remaining-tiles-lw"></span></b>
                     </div>
                 </div>
                 <div id="game-container-lw"></div>
@@ -47,7 +48,7 @@ function InitMemoryGame(htmlDivContainer) {
             }
         }
         // game css path
-        let css = path + gameCssName;
+        let css = path + gameCssRelativePath;
 
         // put into header
         let head = document.getElementsByTagName('head')[0];
@@ -183,14 +184,19 @@ function InitMemoryGame(htmlDivContainer) {
         revealResult();
 
         setTimeout(() => {
-            // only all btn correct will increase difficulty
-            if (wrongClick) {
-                decreaseDifficulty();
+            if (score <= 0) {
+                // game over
+                gameOver();
             } else {
-                increaseDifficulty();
+                // only all btn correct will increase difficulty
+                if (wrongClick) {
+                    decreaseDifficulty();
+                } else {
+                    increaseDifficulty();
+                }
+                prevLvScore = score;
+                runGameLogic();
             }
-            prevLvScore = score;
-            runGameLogic();
         }, 850);
     }
 
@@ -254,6 +260,22 @@ function InitMemoryGame(htmlDivContainer) {
         targetTiles.forEach((tile) => {
             tile.classList.add('target-tiles-lw');
         })
+    }
+
+    function gameOver() {
+        const gameOverText = document.createElement('h1');
+        gameOverText.setAttribute('id', 'game-over-text-lw');
+        gameOverText.innerText = 'Game Over';
+
+        const restartBtn = document.createElement('button');
+        restartBtn.setAttribute('id', 'restart-btn-lw');
+        restartBtn.innerHTML = restartIcon;
+        restartBtn.onclick = resetGameStateAndRun;
+
+        const gameContainer =  document.getElementById('game-container-lw');
+        gameContainer.innerHTML = '';
+        gameContainer.appendChild(gameOverText);
+        gameContainer.appendChild(restartBtn);
     }
 
     // add one dimension and 1 target tile
