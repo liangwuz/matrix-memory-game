@@ -1,9 +1,10 @@
 // init the game in the specified html div container
 function InitMemoryGame(htmlDivContainer) {
 
+    const gameJsFileName = 'matrix-memory-game.js';
     // css
     const GoogleIconHref = 'https://fonts.googleapis.com/icon?family=Material+Icons';
-    const gameCssRelativePath = './memory-game.css';
+    const gameCssRelativePath = './matrix-memory-game.css';
     // sound files relative path to this file
     const SoundRelativePath = {
         correctTile: './sound/correct-tile.mp3',
@@ -27,7 +28,7 @@ function InitMemoryGame(htmlDivContainer) {
         for (let i = 0; i < scripts.length; ++i) {
             const src = scripts[i].src;
             const lastSlash = src.lastIndexOf('/');
-            if (src.substring(lastSlash+1) === 'memory-game.js'){
+            if (src.substring(lastSlash+1) === gameJsFileName){
                 return path = src.substring(0, lastSlash+1);
             }
         }
