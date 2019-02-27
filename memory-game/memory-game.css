@@ -4,8 +4,8 @@
 }
 
 #status-bar-lw {
-    margin-top: 50px;
-    margin-bottom: 100px;
+    margin-top: 30px;
+    margin-bottom: 70px;
     /* background-color: magenta; */
 }
 
@@ -20,7 +20,7 @@
 
 .pull-right {
     position: absolute;
-    right: 3%;
+    right: 1%;
 }
 
 .pull-top {
@@ -51,33 +51,57 @@
     color: white;
 }
 
-#game-container-lw {
-    height: 400px;
-    width: 350px;
-    padding-bottom: 30px;
-    margin: 0 auto;
-    text-align: center;
-    /* background-color: red; */
-}
-
 #tiles-container-lw {
-    margin: 0 auto;
-    margin-top: 10%;
-    margin-bottom: 10%;
-    text-align: center;
     /* background-color: green; */
 }
 
-.tile-rows-lw {
-    /* background-color: blue;  */
-}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    #game-container-lw {
+        height: 320px;
+        width: 260;
+        margin: 0 auto;
+        text-align: center;
+        /* background-color: red; */
+    }
 
-.tiles-lw {
-    background-color:#3b2814;
-    border-radius: 5px; 
-    width:50px; 
-    height:50px;
-}
+    .tile-rows-lw {
+        /* background-color: blue;  */
+        height: 36px;
+    }
+    
+    .tiles-lw {
+        background-color:#3b2814;
+        border-radius: 5px; 
+        margin-left: 1px;
+        width:35px; 
+        height:35px;
+    }
+} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    #game-container-lw {
+        height: 430px;
+        width: 360px;
+        margin: 0 auto;
+        text-align: center;
+        /* background-color: red; */
+    }
+
+    .tile-rows-lw {
+        /* background-color: blue;  */
+        height: 51px;
+    }
+    
+    .tiles-lw {
+        background-color:#3b2814;
+        border-radius: 5px; 
+        margin-left: 1px;
+        width:50px; 
+        height:50px;
+    }
+} 
 
 .target-tiles-lw {
     background-color: rgb(23, 138, 138);
