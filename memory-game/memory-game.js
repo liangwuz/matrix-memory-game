@@ -185,6 +185,12 @@ function InitMemoryGame(htmlDivContainer) {
         }
         
         ++tileClicked;
+
+        // prevent double click
+        tile.onclick = null;
+        // flip effect
+        tile.classList.add('flip-transform');
+
         checkClickedTileIsCorrect(tile);
 
         if (tileClicked == tilesTobeClicked) {
@@ -195,9 +201,6 @@ function InitMemoryGame(htmlDivContainer) {
 
     // mark correct / wrong for the clicked tile
     function checkClickedTileIsCorrect(tile) {
-        // prevent double click
-        tile.onclick = null;
-
         if (targetTiles.includes(tile)) {
             //correct tile, increase score and marked it correct
             ++score;
