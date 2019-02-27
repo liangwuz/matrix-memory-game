@@ -40,6 +40,17 @@
     color: #4F362F;
 }
 
+#play-btn-lw {
+    border: none;
+    background-color: #CA4E31;
+    border-radius: 10px;
+    color: white;
+    margin-top: 50px;
+    height: 100px;
+    width: 200px;
+    font-size: 30px;
+}
+
 #game-over-text-lw {
     color: white;
     font-size: 50px;

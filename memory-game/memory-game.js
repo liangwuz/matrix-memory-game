@@ -59,7 +59,7 @@ function InitMemoryGame(htmlDivContainer) {
                         <b class="game-status-lw">TILES: <span id="remaining-tiles-lw">--</span></b>
                     </div>
                 </div>
-                <div id="game-container-lw"></div>
+                <div id="game-container-lw"><button id="play-btn-lw">PLAY</button></div>
             </div>
         `;
 
@@ -94,6 +94,10 @@ function InitMemoryGame(htmlDivContainer) {
 
         const muteBtn = document.getElementById('mute-btn-lw');
         muteBtn.onclick = muteBtnClick.bind(null, muteBtn);
+
+        document.getElementById('play-btn-lw').onclick = () => {
+            resetGameStateAndRun();
+        };
     }
 
     function loadSoundEffects() {
@@ -398,9 +402,9 @@ function InitMemoryGame(htmlDivContainer) {
     }
 
     return {
-        start: () => {
-            resetGameStateAndRun();
-        },
+        // start: () => {
+        //     resetGameStateAndRun();
+        // },
         restart: () => {
             resetGameStateAndRun();
         },
