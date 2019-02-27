@@ -1,5 +1,5 @@
 // init the game in the specified html div container
-function InitMemoryGame(htmlDivContainer) {
+function InitMatrixMemoryGame(htmlDivContainer) {
 
     const gameJsFileName = 'matrix-memory-game.js';
     // css
