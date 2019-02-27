@@ -1,6 +1,6 @@
 #content-container-lw {
     position: relative;
-    background-color: #4F362F;
+    background-image: radial-gradient(rgb(114, 84, 75),rgb(51, 36, 31));
 }
 
 #status-bar-lw {
