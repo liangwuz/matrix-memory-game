@@ -55,8 +55,8 @@ function InitMemoryGame(htmlDivContainer) {
                         <button id="mute-btn-lw" class="control-btns-lw">${soundIcon}</button>
                     </div>
                     <div class="pull-top pull-right">
-                        <b class="game-status-lw">SCORE: <span id="user-score-lw"></span></b>
-                        <b class="game-status-lw">TILES: <span id="remaining-tiles-lw"></span></b>
+                        <b class="game-status-lw">SCORE: <span id="user-score-lw">--</span></b>
+                        <b class="game-status-lw">TILES: <span id="remaining-tiles-lw">--</span></b>
                     </div>
                 </div>
                 <div id="game-container-lw"></div>
@@ -143,8 +143,8 @@ function InitMemoryGame(htmlDivContainer) {
     }
 
     function updateGameStatusBar() {
-        document.getElementById('user-score-lw').innerText = score;
-        document.getElementById('remaining-tiles-lw').innerText = tilesTobeClicked - tileClicked;
+        document.getElementById('user-score-lw').innerText = (score === undefined) ? '--' : score;
+        document.getElementById('remaining-tiles-lw').innerText = (tilesTobeClicked === undefined) ? '--' : tilesTobeClicked - tileClicked;
     }
 
     // create tiles match the current level
