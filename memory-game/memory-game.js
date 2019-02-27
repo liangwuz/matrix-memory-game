@@ -1,20 +1,52 @@
 // init the game in the specified html div container
 function InitMemoryGame(htmlDivContainer) {
 
+    // css
     const GoogleIconHref = 'https://fonts.googleapis.com/icon?family=Material+Icons';
     const gameCssRelativePath = './memory-game.css';
+    // sound files relative path to this file
+    const SoundRelativePath = {
+        correctTile: './sound/correct-tile.mp3',
+        wrongTile: './sound/wrong-tile.mp3',
+        lvUp: './sound/level-up.mp3',
+        gameOver: './sound/sad-trombone.mp3'
+    };
+
+    // icon htmls
     const pauseIcon = `<i class="material-icons">pause</i>`;
     const resumeIcon = `<i class="material-icons">play_arrow</i>`;
     const soundIcon = `<i class="material-icons">volume_up</i>`;
     const mutedIcon = `<i class="material-icons">volume_off</i>`;
     const restartIcon = `<i class="material-icons" style="font-size:50px;">refresh</i>`;
 
+
+    // get the file path path to the follder of this file
+    const filePath = (function getFilePath() {
+        let scripts = document.getElementsByTagName('script');
+        // find the location of this script
+        for (let i = 0; i < scripts.length; ++i) {
+            const src = scripts[i].src;
+            const lastSlash = src.lastIndexOf('/');
+            if (src.substring(lastSlash+1) === 'memory-game.js'){
+                return path = src.substring(0, lastSlash+1);
+            }
+        }
+    })();
+
+
+    // sound effects
+    const Sound = {
+        correctTile: null, 
+        wrongTileL: null, 
+        lvUp: null, 
+        gameOver: null,
+    };
+
     // create status bar, control and game container
     (function createGameComponent() {
         loadGameCss();
 
         htmlDivContainer.innerHTML = `
-        
             <div id="content-container-lw">
 
                 <div id="status-bar-lw">
@@ -31,25 +63,15 @@ function InitMemoryGame(htmlDivContainer) {
             </div>
         `;
 
+
         registerControlEvents();
+        loadSoundEffects();
     })();
 
     // load memory-game.css at the same folder as this js file
     function loadGameCss() {
-        let scripts = document.getElementsByTagName('script');
-        let path;
-        // find the location of this script
-        for (let i = 0; i < scripts.length; ++i) {
-            const src = scripts[i].src;
-            const lastSlash = src.lastIndexOf('/');
-            if (src.substring(lastSlash+1) === 'memory-game.js'){
-                path = src.substring(0, lastSlash+1);
-                break;
-            }
-        }
         // game css path
-        let css = path + gameCssRelativePath;
-
+        let css = filePath + gameCssRelativePath;
         // put into header
         let head = document.getElementsByTagName('head')[0];
         let link = document.createElement('link');
@@ -72,6 +94,13 @@ function InitMemoryGame(htmlDivContainer) {
 
         const muteBtn = document.getElementById('mute-btn-lw');
         muteBtn.onclick = muteBtnClick.bind(null, muteBtn);
+    }
+
+    function loadSoundEffects() {
+        Sound.correctTile = new Audio(filePath + SoundRelativePath.correctTile);
+        Sound.wrongTile = new Audio(filePath + SoundRelativePath.wrongTile);
+        Sound.lvUp = new Audio(filePath + SoundRelativePath.lvUp);
+        Sound.gameOver = new Audio(filePath + SoundRelativePath.gameOver);
     }
 
     // matrix dimension, number of tiles to be clicked and user score
@@ -170,11 +199,13 @@ function InitMemoryGame(htmlDivContainer) {
             ++score;
             updateGameStatusBar();
             tile.classList.add('correct-tiles-lw');
+            playSoundEffect(Sound.correctTile);
         } else {
             wrongClick = true;
             --score;
             updateGameStatusBar();
             tile.classList.add('wrong-tiles-lw');
+            playSoundEffect(Sound.wrongTile);
         }
     }
 
@@ -263,6 +294,8 @@ function InitMemoryGame(htmlDivContainer) {
     }
 
     function gameOver() {
+        playSoundEffect(Sound.gameOver);
+
         const gameOverText = document.createElement('h1');
         gameOverText.setAttribute('id', 'game-over-text-lw');
         gameOverText.innerText = 'Game Over';
@@ -280,6 +313,8 @@ function InitMemoryGame(htmlDivContainer) {
 
     // add one dimension and 1 target tile
     function increaseDifficulty() {
+        playSoundEffect(Sound.lvUp);
+
         // max 7*7
         if (row < 7 || col < 7) {
             if (row === col) {
@@ -334,19 +369,31 @@ function InitMemoryGame(htmlDivContainer) {
         }
     }
 
-    function muteGame() {
 
+    let allowSound = true;
+
+    function muteGame() {
+        allowSound = false;
     }
 
     function unmuteGame() {
-
+        allowSound = true;
     }
 
     function muteBtnClick(btn) {
         if (btn.innerHTML === soundIcon) {
             btn.innerHTML = mutedIcon;
+            muteGame();
         } else {
             btn.innerHTML = soundIcon;
+            unmuteGame();
+        }
+    }
+
+    function playSoundEffect(sound) {
+        if (allowSound) {
+            sound.currentTime = 0;
+            sound.play();
         }
     }
 
