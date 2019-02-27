@@ -42,7 +42,7 @@
     color: #4F362F;
 }
 
-#play-btn-lw {
+#play-btn-lw, #resume-btn-lw {
     border: solid 1px black;
     box-shadow: 2px 3px;
     background-color: #CA4E31;

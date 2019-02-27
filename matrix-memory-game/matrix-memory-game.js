@@ -356,14 +356,34 @@ function InitMemoryGame(htmlDivContainer) {
         updateGameStatusBar();
         
         gameIsPaused = true;
-        allowClick = false;
+
+        createHightlightResumeBtn();
+    }
+
+    function createHightlightResumeBtn() {
+        const resumeBtn = document.createElement('button');
+        resumeBtn.innerText = 'Resume';
+        resumeBtn.setAttribute('id', 'resume-btn-lw');
+        resumeBtn.onclick = () => {
+            document.getElementById('pause-btn-lw').click();
+        };
+
+        const gameContainer = document.getElementById('game-container-lw');
+        gameContainer.innerHTML = '';
+        gameContainer.appendChild(resumeBtn);
     }
 
     // rerun the current level when resume
     function resumeGame() {
         if (gameIsPaused) {
             gameIsPaused = false;
-            runGameLogic();
+
+            // game is not started
+            if (isNaN(tilesTobeClicked)) {
+                resetGameStateAndRun();
+            } else{
+                runGameLogic();
+            }
         }
     }
 
